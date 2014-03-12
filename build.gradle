@@ -17,9 +17,12 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '1.0.0.BUILD-SNAPSHOT'
     compile group: 'com.google.guava', name: 'guava', version: '16.0.1'
     compile group: 'com.evernote', name: 'evernote-api', version: '1.25.1'
+    compile group: 'joda-time', name: 'joda-time', version: '2.3'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.0.0.BUILD-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile group: 'org.mockito', name: 'mockito-core',  version: '1.9.5'
+    testCompile group: 'org.easytesting', name: 'fest-assert-core', version: '2.0M10'
 }
 
 jar {
