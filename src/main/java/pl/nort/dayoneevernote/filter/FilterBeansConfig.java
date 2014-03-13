@@ -15,25 +15,29 @@
 */
 package pl.nort.dayoneevernote.filter;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import pl.nort.dayoneevernote.note.Note;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
- * Checks if the {@link pl.nort.dayoneevernote.note.Note} title matches the regexp query
+ * Configure some default filters
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public class TitleMatchPredicate implements FilterStrategy {
+@Configuration
+public class FilterBeansConfig {
 
-    private final String pattern;
-
-    public TitleMatchPredicate(String pattern) {
-        this.pattern = checkNotNull(pattern);
+    @Bean @Primary
+    public Predicate<Note> dateTitleFilterStrategy() {
+        return new TitleMatchPredicate("[1-2][0-9]{3}/[01][0-9]/[0-3][0-9].*");
     }
 
-    @Override
-    public boolean apply(Note note) {
-        return note.getTitle().matches(pattern);
+    @Bean
+    public Predicate<Note> allTitlesExceptDuplicatesFilterStrategy() {
+        return Predicates.not(new TitleMatchPredicate(".*[Dd]uplicate.*"));
     }
+
 }

@@ -15,25 +15,13 @@
 */
 package pl.nort.dayoneevernote.filter;
 
+import com.google.common.base.Predicate;
 import pl.nort.dayoneevernote.note.Note;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
- * Checks if the {@link pl.nort.dayoneevernote.note.Note} title matches the regexp query
+ * Defines filtering for notes
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public class TitleMatchPredicate implements FilterStrategy {
-
-    private final String pattern;
-
-    public TitleMatchPredicate(String pattern) {
-        this.pattern = checkNotNull(pattern);
-    }
-
-    @Override
-    public boolean apply(Note note) {
-        return note.getTitle().matches(pattern);
-    }
+public interface FilterStrategy extends Predicate<Note> {
 }
