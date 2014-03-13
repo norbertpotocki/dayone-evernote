@@ -15,6 +15,7 @@
 */
 package pl.nort.dayoneevernote.note;
 
+import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -50,26 +51,30 @@ public class Note {
 
     public static class Builder {
 
-        private String title;
-        private String body;
-        private DateTime creationTime;
+        private static final String TITLE_DEFAULT = "";
+        private static final String BODY_DEFAULT = "";
+        private static final DateTime CREATION_TIME_DEFAULT = new DateTime(0);
+
+        private String title = TITLE_DEFAULT;
+        private String body = BODY_DEFAULT;
+        private DateTime creationTime = CREATION_TIME_DEFAULT;
 
         public Note build() {
             return new Note(title, body, creationTime);
         }
 
         public Builder withTitle(String title) {
-            this.title = title;
+            this.title = Objects.firstNonNull(title, TITLE_DEFAULT);
             return this;
         }
 
         public Builder withBody(String body) {
-            this.body = body;
+            this.body = Objects.firstNonNull(body, BODY_DEFAULT);
             return this;
         }
 
         public Builder withCreationTime(DateTime creationTime) {
-            this.creationTime = creationTime;
+            this.creationTime = Objects.firstNonNull(creationTime, CREATION_TIME_DEFAULT);
             return this;
         }
     }
