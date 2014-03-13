@@ -20,10 +20,7 @@ import com.google.common.collect.ImmutableList;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 import pl.nort.dayoneevernote.note.Note;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -37,13 +34,7 @@ public class NewEntryCommand implements Function<Note, Boolean> {
 
     private static final String CLI_APP = "dayone";
     private static final String CLI_COMMAND = "new";
-    private static final String CREATION_DATE_PATTERN = " --date=%s ";
-
-    private final List<String> defaultCommand;
-
-    public NewEntryCommand() {
-        defaultCommand = ImmutableList.of(CLI_APP, CLI_COMMAND);
-    }
+    private static final String CREATION_DATE_PARAMETER = "--date=%s";
 
     @Override
     public Boolean apply(Note note) {
@@ -53,19 +44,31 @@ public class NewEntryCommand implements Function<Note, Boolean> {
 
         try {
             System.out.println("Writing note to Dayone using CLI: " + note);
+            System.out.println("Using command: " + pb.command());
 
             Process process = pb.start();
+            pb.redirectErrorStream(true);
 
             Writer writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
             writeNote(note, writer);
             writer.close();
 
             if (process.waitFor() != 0) {
+
+                StringBuilder out = new StringBuilder();
+                BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    out.append(line).append('\n');
+                    System.err.println(line);
+                }
+
                 return false;
             }
 
         } catch (Exception e) {
-            throw new ConnectionException("DayOne", e.getMessage(), e);
+            throw new ConnectionException("Dayone", e.getMessage(), e);
         }
 
         return true;
@@ -77,11 +80,8 @@ public class NewEntryCommand implements Function<Note, Boolean> {
     }
 
     private List<String> prepareShellCommand(Note note) {
-
-        ImmutableList.Builder<String> builder = ImmutableList.builder();
-        builder.addAll(defaultCommand);
-        builder.add(String.format(CREATION_DATE_PATTERN, note.getCreationTime()));
-
-        return builder.build();
+        return ImmutableList.of(CLI_APP,
+                String.format(CREATION_DATE_PARAMETER, note.getCreationTime().toString()),
+                CLI_COMMAND);
     }
 }
