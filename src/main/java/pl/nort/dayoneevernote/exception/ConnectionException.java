@@ -13,9 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package pl.nort.dayoneevernote.fetch;
-
-import pl.nort.dayoneevernote.exception.DoevException;
+package pl.nort.dayoneevernote.exception;
 
 /**
  * Service connection exception

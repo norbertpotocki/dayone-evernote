@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package pl.nort.dayoneevernote.fetch;
+package pl.nort.dayoneevernote.evernote.fetch;
 
 import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
@@ -21,6 +21,7 @@ import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
 import com.evernote.edam.type.Note;
 import org.springframework.stereotype.Component;
+import pl.nort.dayoneevernote.exception.ConnectionException;
 
 import javax.inject.Inject;
 import java.util.HashSet;

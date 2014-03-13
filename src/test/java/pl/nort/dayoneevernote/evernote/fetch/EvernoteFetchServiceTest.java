@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package pl.nort.dayoneevernote.fetch;
+package pl.nort.dayoneevernote.evernote.fetch;
 
 import com.evernote.clients.ClientFactory;
 import com.evernote.edam.error.EDAMUserException;
@@ -24,6 +24,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import pl.nort.dayoneevernote.exception.ConnectionException;
 
 import static org.mockito.Mockito.when;
 
