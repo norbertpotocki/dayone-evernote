@@ -27,12 +27,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Note {
 
     private final String title;
-    private final String boyd;
+    private final String body;
     private final DateTime creationTime;
 
-    public Note(String title, String boyd, DateTime creationTime) {
+    public Note(String title, String body, DateTime creationTime) {
         this.title = checkNotNull(title);
-        this.boyd = checkNotNull(boyd);
+        this.body = checkNotNull(body);
         this.creationTime = checkNotNull(creationTime);
     }
 
@@ -40,11 +40,37 @@ public class Note {
         return title;
     }
 
-    public String getBoyd() {
-        return boyd;
+    public String getBody() {
+        return body;
     }
 
     public DateTime getCreationTime() {
         return creationTime;
+    }
+
+    public static class Builder {
+
+        private String title;
+        private String body;
+        private DateTime creationTime;
+
+        public Note build() {
+            return new Note(title, body, creationTime);
+        }
+
+        public Builder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public Builder withCreationTime(DateTime creationTime) {
+            this.creationTime = creationTime;
+            return this;
+        }
     }
 }

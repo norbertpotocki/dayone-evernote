@@ -19,12 +19,14 @@ import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
-import com.evernote.edam.type.Note;
 import org.springframework.stereotype.Component;
+import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
+import pl.nort.dayoneevernote.note.Note;
 
 import javax.inject.Inject;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +41,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class EvernoteFetchService {
 
     private static final String SERVICE_NAME = "evernote";
+    private static final int BATCH_SIZE = 100;
 
     private final ClientFactory clientFactory;
 
@@ -49,15 +52,26 @@ public class EvernoteFetchService {
 
     public Set<Note> getNotes() {
 
-        List<Note> notes;
+        List<Note> notes = new LinkedList<Note>();
 
         try {
             NoteStoreClient noteClient = clientFactory.createNoteStoreClient();
 
+            // Select all notes
             NoteFilter noteFilter = new NoteFilter();
+            NoteList noteList;
+            int firstPosInBatch = 0;
 
-            NoteList noteList = noteClient.findNotes(noteFilter, 0, 1000);
-            notes = noteList.getNotes();
+            do {
+                noteList = noteClient.findNotes(noteFilter, firstPosInBatch, BATCH_SIZE);
+
+                for(com.evernote.edam.type.Note note : noteList.getNotes()) {
+                    notes.add(NoteFactory.fromEvernoteNote(note));
+                }
+
+                firstPosInBatch += BATCH_SIZE;
+            } while(noteList.getTotalNotes() > firstPosInBatch);
+
         } catch (Exception e) {
             throw new ConnectionException(SERVICE_NAME, e);
         }
