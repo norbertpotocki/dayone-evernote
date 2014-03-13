@@ -63,9 +63,11 @@ public class EvernoteFetchService {
             int firstPosInBatch = 0;
 
             do {
+                // This does only fetch note metadata and omits body and attachments
                 noteList = noteClient.findNotes(noteFilter, firstPosInBatch, BATCH_SIZE);
 
                 for(com.evernote.edam.type.Note note : noteList.getNotes()) {
+                    note = noteClient.getNote(note.getGuid(), true, false, false, false);
                     notes.add(NoteFactory.fromEvernoteNote(note));
                 }
 
