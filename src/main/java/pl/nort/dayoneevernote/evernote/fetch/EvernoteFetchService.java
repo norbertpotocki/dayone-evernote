@@ -73,7 +73,7 @@ public class EvernoteFetchService {
             } while(noteList.getTotalNotes() > firstPosInBatch);
 
         } catch (Exception e) {
-            throw new ConnectionException(SERVICE_NAME, e);
+            throw new ConnectionException(SERVICE_NAME, e.getMessage(), e);
         }
 
         return new HashSet<Note>(notes);
