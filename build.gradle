@@ -18,6 +18,7 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '16.0.1'
     compile group: 'com.evernote', name: 'evernote-api', version: '1.25.1'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
+    compile group: 'javax.inject', name: 'javax.inject', version: '1'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.0.0.BUILD-SNAPSHOT'
     testCompile group: 'junit', name: 'junit', version: '4.11'

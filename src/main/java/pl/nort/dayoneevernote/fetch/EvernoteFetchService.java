@@ -15,19 +15,52 @@
 */
 package pl.nort.dayoneevernote.fetch;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.evernote.clients.ClientFactory;
+import com.evernote.clients.NoteStoreClient;
+import com.evernote.edam.notestore.NoteFilter;
+import com.evernote.edam.notestore.NoteList;
+import com.evernote.edam.type.Note;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
+ * Fetches a set of notes from Evernote
+ *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Component
 public class EvernoteFetchService {
 
-    @Value("${accountName:youForgotToSetYourAccountName}")
-    private String accountName;
+    private static final String SERVICE_NAME = "evernote";
 
-    public String sayHello() {
-        return "Oyyy! " + accountName;
+    private final ClientFactory clientFactory;
+
+    @Inject
+    public EvernoteFetchService(ClientFactory clientFactory) {
+        this.clientFactory = checkNotNull(clientFactory);
+    }
+
+    public Set<Note> getNotes() {
+
+        List<Note> notes;
+
+        try {
+            NoteStoreClient noteClient = clientFactory.createNoteStoreClient();
+
+            NoteFilter noteFilter = new NoteFilter();
+
+            NoteList noteList = noteClient.findNotes(noteFilter, 0, 1000);
+            notes = noteList.getNotes();
+        } catch (Exception e) {
+            throw new ConnectionException(SERVICE_NAME, e);
+        }
+
+        return new HashSet<Note>(notes);
     }
 }

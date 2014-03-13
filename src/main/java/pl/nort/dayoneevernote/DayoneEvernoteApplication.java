@@ -15,13 +15,14 @@
 */
 package pl.nort.dayoneevernote;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import pl.nort.dayoneevernote.fetch.EvernoteFetchService;
+
+import javax.inject.Inject;
 
 /**
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
@@ -31,17 +32,16 @@ import pl.nort.dayoneevernote.fetch.EvernoteFetchService;
 @ComponentScan
 public class DayoneEvernoteApplication implements CommandLineRunner {
 
-    @Autowired
+    @Inject
     private EvernoteFetchService fetchService;
 
-
     @Override
-    public void run(String... args) throws Exception {
-        System.out.println(fetchService.sayHello());
+    public void run(String... args) {
+        System.out.println("Fetched " + fetchService.getNotes().size() + " notes");
     }
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(DayoneEvernoteApplication.class, args);
     }
 }
