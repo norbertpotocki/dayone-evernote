@@ -26,7 +26,7 @@ import pl.nort.dayoneevernote.note.Note;
  */
 @Component
 @Primary
-public class StdoutPusher implements Pusher {
+public class StdoutPusher extends AbstractPusher {
 
     @Override
     public boolean push(Note note) {

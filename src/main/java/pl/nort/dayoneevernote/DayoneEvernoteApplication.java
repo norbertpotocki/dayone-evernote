@@ -50,9 +50,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
         System.out.println("Matched " + Iterables.size(filteredNotes) + " of " + notes.size() + " notes");
 
-        for(Note note : filteredNotes) {
-            pusher.push(note);
-        }
+        pusher.push(filteredNotes);
     }
 
 

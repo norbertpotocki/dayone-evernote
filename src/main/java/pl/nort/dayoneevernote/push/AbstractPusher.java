@@ -18,20 +18,21 @@ package pl.nort.dayoneevernote.push;
 import pl.nort.dayoneevernote.note.Note;
 
 /**
- * Pushes a note to service store
+ * Provides standard implementation to some of the {@link pl.nort.dayoneevernote.push.Pusher} methods
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public interface Pusher {
+public abstract class AbstractPusher implements Pusher {
 
-    /**
-     * Push a note
-     */
-    boolean push(Note note);
+    @Override
+    public boolean push(Iterable<Note> notes) {
 
-    /**
-     * Push a set of notes
-     */
-    boolean push(Iterable<Note> notes);
+        for(Note note : notes) {
+            if(!push(note)) {
+                return false;
+            }
+        }
 
+        return true;
+    }
 }
