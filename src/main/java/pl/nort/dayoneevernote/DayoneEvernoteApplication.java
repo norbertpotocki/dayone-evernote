@@ -27,6 +27,7 @@ import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.Pusher;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Set;
 
 /**
@@ -39,8 +40,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filterStrategy;
-    @Inject private Pusher pusher;
-
+    @Inject @Named("dayonePusher") private Pusher pusher;
 
     @Override
     public void run(String... args) {
