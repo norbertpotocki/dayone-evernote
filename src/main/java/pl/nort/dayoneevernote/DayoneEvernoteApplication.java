@@ -24,6 +24,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import pl.nort.dayoneevernote.evernote.fetch.EvernoteFetchService;
 import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.push.Pusher;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -38,6 +39,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filterStrategy;
+    @Inject private Pusher pusher;
 
 
     @Override
@@ -47,6 +49,10 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
         Iterable<Note> filteredNotes = Iterables.filter(notes, filterStrategy);
 
         System.out.println("Matched " + Iterables.size(filteredNotes) + " of " + notes.size() + " notes");
+
+        for(Note note : filteredNotes) {
+            pusher.push(note);
+        }
     }
 
 

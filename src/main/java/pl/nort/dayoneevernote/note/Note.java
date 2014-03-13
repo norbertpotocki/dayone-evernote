@@ -49,6 +49,15 @@ public class Note {
         return creationTime;
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+            .add("title", title)
+            .add("body", body)
+            .add("creationTime", creationTime)
+            .toString();
+    }
+
     public static class Builder {
 
         private static final String TITLE_DEFAULT = "";
