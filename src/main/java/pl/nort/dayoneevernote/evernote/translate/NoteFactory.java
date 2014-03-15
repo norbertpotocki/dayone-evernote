@@ -15,24 +15,39 @@
 */
 package pl.nort.dayoneevernote.evernote.translate;
 
+import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.note.Note;
+
+import javax.inject.Inject;
+import java.util.HashMap;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Transforms Evernote's {@link com.evernote.edam.type.Note} to our own {@link pl.nort.dayoneevernote.note.Note}
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
+@Component
 public class NoteFactory {
 
-    public static Note fromEvernoteNote(com.evernote.edam.type.Note note) {
+    private final ENMLProcessor enmlProcessor;
+
+    @Inject
+    public NoteFactory(ENMLProcessor enmlProcessor) {
+        this.enmlProcessor = checkNotNull(enmlProcessor);
+    }
+
+    public Note fromEvernoteNote(com.evernote.edam.type.Note note) throws Exception {
 
         Note.Builder builder = new Note.Builder();
 
         builder
             .withTitle(note.getTitle())
-            .withBody(note.getContent())
+            .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
             .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC));
 
         return builder.build();

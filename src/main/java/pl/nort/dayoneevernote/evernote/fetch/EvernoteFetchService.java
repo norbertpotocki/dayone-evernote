@@ -44,15 +44,17 @@ public class EvernoteFetchService {
     private static final int BATCH_SIZE = 100;
 
     private final ClientFactory clientFactory;
+    private final NoteFactory noteFactory;
 
     @Inject
-    public EvernoteFetchService(ClientFactory clientFactory) {
+    public EvernoteFetchService(ClientFactory clientFactory, NoteFactory noteFactory) {
+        this.noteFactory = checkNotNull(noteFactory);
         this.clientFactory = checkNotNull(clientFactory);
     }
 
     public Set<Note> getNotes() {
 
-        List<Note> notes = new LinkedList<Note>();
+        List<Note> notes = new LinkedList<>();
 
         try {
             NoteStoreClient noteClient = clientFactory.createNoteStoreClient();
@@ -68,7 +70,7 @@ public class EvernoteFetchService {
 
                 for(com.evernote.edam.type.Note note : noteList.getNotes()) {
                     note = noteClient.getNote(note.getGuid(), true, false, false, false);
-                    notes.add(NoteFactory.fromEvernoteNote(note));
+                    notes.add(noteFactory.fromEvernoteNote(note));
                 }
 
                 firstPosInBatch += BATCH_SIZE;
@@ -78,6 +80,6 @@ public class EvernoteFetchService {
             throw new ConnectionException(SERVICE_NAME, e.getMessage(), e);
         }
 
-        return new HashSet<Note>(notes);
+        return new HashSet<>(notes);
     }
 }

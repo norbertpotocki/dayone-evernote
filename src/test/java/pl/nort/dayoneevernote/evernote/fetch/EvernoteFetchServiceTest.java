@@ -24,6 +24,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 
 import static org.mockito.Mockito.when;
@@ -37,11 +38,12 @@ public class EvernoteFetchServiceTest {
     @Rule public ExpectedException thrown = ExpectedException.none();
 
     @Mock private ClientFactory clientFactory;
+    @Mock private NoteFactory noteFactory;
     private EvernoteFetchService service;
 
     @Before
     public void setUp() throws Exception {
-        service = new EvernoteFetchService(clientFactory);
+        service = new EvernoteFetchService(clientFactory, noteFactory);
     }
 
     @Test

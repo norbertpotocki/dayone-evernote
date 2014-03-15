@@ -18,6 +18,7 @@ package pl.nort.dayoneevernote.evernote;
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
+import com.syncthemall.enml4j.ENMLProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,11 @@ public class EvernoteConfiguration {
         EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, authToken);
 
         return new ClientFactory(evernoteAuth);
+    }
+
+    @Bean
+    public ENMLProcessor enmlProcessor() {
+        return new ENMLProcessor();
     }
 
 }
