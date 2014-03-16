@@ -17,7 +17,7 @@ package pl.nort.dayoneevernote.dayone.push;
 
 import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
-import pl.nort.dayoneevernote.dayone.push.command.NewEntryCommand;
+import pl.nort.dayoneevernote.dayone.push.command.InsertNoteUsingCliCommand;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.AbstractPusher;
 
@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Component
 public class DayonePusher extends AbstractPusher {
 
-    private final NewEntryCommand newEntryCommand = new NewEntryCommand();
+    private final InsertNoteUsingCliCommand insertNoteCommand = new InsertNoteUsingCliCommand();
     private final DayoneNoteFactory dayoneNoteFactory;
 
     @Inject
@@ -46,7 +46,7 @@ public class DayonePusher extends AbstractPusher {
 
         Note dayoneNote = dayoneNoteFactory.fromNote(note);
 
-        return newEntryCommand.apply(dayoneNote);
+        return insertNoteCommand.apply(dayoneNote);
     }
 
 }

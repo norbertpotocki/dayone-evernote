@@ -15,7 +15,7 @@
 */
 package pl.nort.dayoneevernote.dayone.push.command;
 
-import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 import pl.nort.dayoneevernote.note.Note;
@@ -30,14 +30,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public class NewEntryCommand implements Function<Note, Boolean> {
+public class InsertNoteUsingCliCommand implements Predicate<Note> {
 
     private static final String CLI_APP = "dayone";
     private static final String CLI_COMMAND = "new";
     private static final String CREATION_DATE_PARAMETER = "--date=%s";
 
     @Override
-    public Boolean apply(Note note) {
+    public boolean apply(Note note) {
         checkNotNull(note);
 
         ProcessBuilder pb = new ProcessBuilder(prepareShellCommand(note));
