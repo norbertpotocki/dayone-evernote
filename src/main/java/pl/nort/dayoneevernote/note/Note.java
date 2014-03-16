@@ -65,6 +65,23 @@ public class Note {
             .toString();
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(title, body, creationTime, location);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Note other = (Note) obj;
+        return Objects.equal(this.title, other.title) && Objects.equal(this.body, other.body) && Objects.equal(this.creationTime, other.creationTime) && Objects.equal(this.location, other.location);
+    }
+
     public static class Builder {
 
         private static final String TITLE_DEFAULT = "";
