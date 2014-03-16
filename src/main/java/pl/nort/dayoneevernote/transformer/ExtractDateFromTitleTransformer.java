@@ -22,7 +22,9 @@ import pl.nort.dayoneevernote.note.Note;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- *
+ * Extracts date from a {@link pl.nort.dayoneevernote.note.Note} title and uses it as as creation date. Note title
+ * must match both provided {@code titlePattern} and {@link org.joda.time.format.DateTimeFormat} pattern supplied in
+ * {@code datePattern}. If either of them doesn't match, the creation time will not be modified.
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
@@ -42,8 +44,12 @@ public class ExtractDateFromTitleTransformer implements NoteTransformer {
         Note.Builder builder = new Note.Builder().cloneOf(note);
 
         if(note.getTitle().matches(titlePattern)) {
-            DateTime dt = DateTime.parse(note.getTitle(), DateTimeFormat.forPattern(datePattern).withZoneUTC());
-            builder.withCreationTime(dt);
+            try {
+                DateTime dt = DateTime.parse(note.getTitle(), DateTimeFormat.forPattern(datePattern).withZoneUTC());
+                builder.withCreationTime(dt);
+            } catch (IllegalArgumentException e) {
+                // NOP
+            }
         }
 
         return builder.build();

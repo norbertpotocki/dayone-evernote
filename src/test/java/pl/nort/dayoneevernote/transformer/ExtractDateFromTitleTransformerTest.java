@@ -44,10 +44,14 @@ public class ExtractDateFromTitleTransformerTest extends NoteTransformerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "", "", "x", DEFAULT_DATE },
+                { "", "", "", DEFAULT_DATE },
                 { "", "yyyy/MM/dd HH:mm", "2014/01/01", DEFAULT_DATE },
                 { "[1-2][0-9]{3}/[01][0-9]/[0-3][0-9]", "yyyy/MM/dd",
                         "2013/99/31", DEFAULT_DATE },
+                { "[1-2][0-9]{3}/[01][0-9]/[0-3][0-9]", "yyyy/MM/dd",
+                        "2013/12/31 - test", DEFAULT_DATE},
+                { "[1-2][0-9]{3}/[01][0-9]/[0-3][0-9]", "yyyy/MM/dd HH:mm",
+                        "2013/12/31", DEFAULT_DATE},
                 { "[1-2][0-9]{3}/[01][0-9]/[0-3][0-9]", "yyyy/MM/dd",
                         "2013/12/31", new DateTime(2013, 12, 31, 0, 0, DateTimeZone.UTC)},
                 { "[1-2][0-9]{3}/[01][0-9]/[0-3][0-9] [0-2][0-9]:[0-5][0-9]", "yyyy/MM/dd HH:mm",
