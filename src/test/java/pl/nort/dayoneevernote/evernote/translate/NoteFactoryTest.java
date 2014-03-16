@@ -17,7 +17,6 @@ package pl.nort.dayoneevernote.evernote.translate;
 
 import com.evernote.edam.type.NoteAttributes;
 import com.evernote.edam.type.Notebook;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.junit.Before;
 import org.junit.Rule;
