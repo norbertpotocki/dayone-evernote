@@ -84,37 +84,32 @@ public class Note {
 
     public static class Builder {
 
-        private static final String TITLE_DEFAULT = "";
-        private static final String BODY_DEFAULT = "";
-        private static final DateTime CREATION_TIME_DEFAULT = new DateTime(0);
-        private static final Coordinates LOCATION_DEFAULT = new Coordinates(0, 0, 0);
-
-        private String title = TITLE_DEFAULT;
-        private String body = BODY_DEFAULT;
-        private DateTime creationTime = CREATION_TIME_DEFAULT;
-        private Coordinates location = LOCATION_DEFAULT;
+        private String title;
+        private String body;
+        private DateTime creationTime;
+        private Coordinates location;
 
         public Note build() {
             return new Note(title, body, creationTime, location);
         }
 
         public Builder withTitle(String title) {
-            this.title = Objects.firstNonNull(title, TITLE_DEFAULT);
+            this.title = title;
             return this;
         }
 
         public Builder withBody(String body) {
-            this.body = Objects.firstNonNull(body, BODY_DEFAULT);
+            this.body = body;
             return this;
         }
 
         public Builder withCreationTime(DateTime creationTime) {
-            this.creationTime = Objects.firstNonNull(creationTime, CREATION_TIME_DEFAULT);
+            this.creationTime = creationTime;
             return this;
         }
 
         public Builder withLocation(Coordinates coordinates) {
-            this.location = Objects.firstNonNull(coordinates, LOCATION_DEFAULT);
+            this.location = coordinates;
             return this;
         }
 

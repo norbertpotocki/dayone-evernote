@@ -18,6 +18,7 @@ package pl.nort.dayoneevernote.dayone.convert;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.note.Notes;
 import pl.nort.dayoneevernote.translate.ExternalNoteFactory;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -32,6 +33,7 @@ public class DayoneNoteFactoryTest {
 
     private ExternalNoteFactory<Note> factory = new DayoneNoteFactory();
     private Note note = new Note.Builder()
+            .cloneOf(Notes.defaultNote())
             .withTitle("testTitle")
             .withCreationTime(new DateTime())
             .withBody(NOTE_BODY)

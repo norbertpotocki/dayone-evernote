@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.note.Notes;
 
 /**
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
@@ -32,7 +33,7 @@ public abstract class NoteTransformerTest {
 
     @Before
     public void setUpTransformerTest() throws Exception {
-        sourceNote = new Note.Builder().build();
+        sourceNote = Notes.defaultNote();
     }
 
 }

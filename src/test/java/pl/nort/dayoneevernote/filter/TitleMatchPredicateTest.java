@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.note.Notes;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,7 +62,10 @@ public class TitleMatchPredicateTest {
     public void shouldMatch() throws Exception {
         predicate = new TitleMatchPredicate(pattern);
 
-        Note note = new Note.Builder().withTitle(title).build();
+        Note note = new Note.Builder()
+            .cloneOf(Notes.defaultNote())
+            .withTitle(title)
+            .build();
 
         assertThat(predicate.apply(note)).isEqualTo(matches);
     }

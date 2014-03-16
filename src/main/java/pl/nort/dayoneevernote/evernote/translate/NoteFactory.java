@@ -15,6 +15,7 @@
 */
 package pl.nort.dayoneevernote.evernote.translate;
 
+import com.google.common.base.Objects;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -44,19 +45,16 @@ public class NoteFactory {
 
     public Note fromEvernoteNote(com.evernote.edam.type.Note note) throws Exception {
 
-        Note.Builder builder = new Note.Builder();
-
         double x = note.getAttributes().getLongitude(),
-            y = note.getAttributes().getLatitude(),
-            z = note.getAttributes().getAltitude();
+                y = note.getAttributes().getLatitude(),
+                z = note.getAttributes().getAltitude();
 
-        builder
-            .withTitle(note.getTitle())
+        return new Note.Builder()
+            .withTitle(Objects.firstNonNull(note.getTitle(), ""))
             .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
             .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC))
-            .withLocation(new Coordinates(x, y, z));
-
-        return builder.build();
+            .withLocation(new Coordinates(x, y, z))
+            .build();
     }
 
 }
