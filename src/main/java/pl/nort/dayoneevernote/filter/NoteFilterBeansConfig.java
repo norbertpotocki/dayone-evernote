@@ -31,13 +31,11 @@ import pl.nort.dayoneevernote.note.Note;
 public class NoteFilterBeansConfig {
 
     @Bean @Primary
-    public Predicate<Note> dateTitleFilterStrategy() {
-        return new TitleMatchPredicate("[1-2][0-9]{3}/[01][0-9]/[0-3][0-9].*");
-    }
+    public Predicate<Note> defaultFilterChain() {
+        NoteFilter titleMatchPredicate = new TitleMatchPredicate("[1-2][0-9]{3}/[01][0-9]/[0-3][0-9].*");
+        NoteFilter labelMatchPredicate = new LabelMatchPredicate("First notebook");
 
-    @Bean
-    public Predicate<Note> allTitlesExceptDuplicatesFilterStrategy() {
-        return Predicates.not(new TitleMatchPredicate(".*[Dd]uplicate.*"));
+        return Predicates.and(titleMatchPredicate, labelMatchPredicate);
     }
 
 }
