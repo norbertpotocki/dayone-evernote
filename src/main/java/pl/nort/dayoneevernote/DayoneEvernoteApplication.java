@@ -42,7 +42,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filter;
     @Inject private Function<Note, Note> transformer;
-    @Inject @Named("dayoneCliPusher") private Pusher pusher;
+    @Inject @Named("stdoutPusher") private Pusher pusher;
 
     @Override
     public void run(String... args) {
