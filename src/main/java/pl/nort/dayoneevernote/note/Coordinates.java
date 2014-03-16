@@ -54,4 +54,21 @@ public class Coordinates {
                 .add("z", z)
                 .toString();
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(x, y, z);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Coordinates other = (Coordinates) obj;
+        return Objects.equal(this.x, other.x) && Objects.equal(this.y, other.y) && Objects.equal(this.z, other.z);
+    }
 }
