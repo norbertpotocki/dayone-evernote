@@ -86,5 +86,11 @@ public class Note {
             this.creationTime = Objects.firstNonNull(creationTime, CREATION_TIME_DEFAULT);
             return this;
         }
+
+        public Builder cloneOf(Note note) {
+            return this.withBody(note.getBody())
+                .withCreationTime(note.getCreationTime())
+                .withTitle(note.getTitle());
+        }
     }
 }
