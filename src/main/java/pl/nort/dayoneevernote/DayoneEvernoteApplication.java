@@ -15,6 +15,7 @@
 */
 package pl.nort.dayoneevernote;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.springframework.boot.CommandLineRunner;
@@ -39,18 +40,20 @@ import java.util.Set;
 public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Inject private EvernoteFetchService fetchService;
-    @Inject private Predicate<Note> filterStrategy;
+    @Inject private Predicate<Note> filter;
+    @Inject private Function<Note, Note> transformer;
     @Inject @Named("dayoneCliPusher") private Pusher pusher;
 
     @Override
     public void run(String... args) {
         Set<Note> notes = fetchService.getNotes();
 
-        Iterable<Note> filteredNotes = Iterables.filter(notes, filterStrategy);
+        Iterable<Note> filteredNotes = Iterables.filter(notes, filter);
+        Iterable<Note> transformedNotes = Iterables.transform(filteredNotes, transformer);
 
-        System.out.println("Matched " + Iterables.size(filteredNotes) + " of " + notes.size() + " notes");
+        System.out.println("Matched " + Iterables.size(transformedNotes) + " of " + notes.size() + " notes");
 
-        if(!pusher.push(filteredNotes)) {
+        if(!pusher.push(transformedNotes)) {
             System.out.println("Import of some notes failed!");
         }
     }
