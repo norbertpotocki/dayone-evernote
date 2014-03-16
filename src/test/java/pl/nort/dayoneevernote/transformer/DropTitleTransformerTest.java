@@ -43,6 +43,7 @@ public class DropTitleTransformerTest extends NoteTransformerTest {
 
         assertThat(resultNote.getBody()).isEqualTo(sourceNote.getBody());
         assertThat(resultNote.getCreationTime()).isEqualTo(sourceNote.getCreationTime());
+        assertThat(resultNote.getLocation()).isEqualTo(sourceNote.getLocation());
     }
 
 }

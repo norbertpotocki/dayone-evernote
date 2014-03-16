@@ -30,11 +30,13 @@ public class Note {
     private final String title;
     private final String body;
     private final DateTime creationTime;
+    private final Coordinates location;
 
-    public Note(String title, String body, DateTime creationTime) {
+    public Note(String title, String body, DateTime creationTime, Coordinates location) {
         this.title = checkNotNull(title);
         this.body = checkNotNull(body);
         this.creationTime = checkNotNull(creationTime);
+        this.location = checkNotNull(location);
     }
 
     public String getTitle() {
@@ -49,12 +51,17 @@ public class Note {
         return creationTime;
     }
 
+    public Coordinates getLocation() {
+        return location;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
             .add("title", title)
             .add("body", body)
             .add("creationTime", creationTime)
+            .add("location", location)
             .toString();
     }
 
@@ -63,13 +70,15 @@ public class Note {
         private static final String TITLE_DEFAULT = "";
         private static final String BODY_DEFAULT = "";
         private static final DateTime CREATION_TIME_DEFAULT = new DateTime(0);
+        private static final Coordinates LOCATION_DEFAULT = new Coordinates(0, 0, 0);
 
         private String title = TITLE_DEFAULT;
         private String body = BODY_DEFAULT;
         private DateTime creationTime = CREATION_TIME_DEFAULT;
+        private Coordinates location = LOCATION_DEFAULT;
 
         public Note build() {
-            return new Note(title, body, creationTime);
+            return new Note(title, body, creationTime, location);
         }
 
         public Builder withTitle(String title) {
@@ -87,10 +96,16 @@ public class Note {
             return this;
         }
 
+        public Builder withLocation(Coordinates coordinates) {
+            this.location = Objects.firstNonNull(coordinates, LOCATION_DEFAULT);
+            return this;
+        }
+
         public Builder cloneOf(Note note) {
             return this.withBody(note.getBody())
                 .withCreationTime(note.getCreationTime())
-                .withTitle(note.getTitle());
+                .withTitle(note.getTitle())
+                .withLocation(note.getLocation());
         }
     }
 }

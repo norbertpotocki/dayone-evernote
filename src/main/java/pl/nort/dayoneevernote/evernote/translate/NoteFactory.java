@@ -19,6 +19,7 @@ import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
+import pl.nort.dayoneevernote.note.Coordinates;
 import pl.nort.dayoneevernote.note.Note;
 
 import javax.inject.Inject;
@@ -45,10 +46,15 @@ public class NoteFactory {
 
         Note.Builder builder = new Note.Builder();
 
+        double x = note.getAttributes().getLongitude(),
+            y = note.getAttributes().getLatitude(),
+            z = note.getAttributes().getAltitude();
+
         builder
             .withTitle(note.getTitle())
             .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
-            .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC));
+            .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC))
+            .withLocation(new Coordinates(x, y, z));
 
         return builder.build();
     }
