@@ -31,13 +31,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Component
-public class DayonePusher extends AbstractPusher {
+public class DayoneCliPusher extends AbstractPusher {
 
     private final InsertNoteUsingCliCommand insertNoteCommand = new InsertNoteUsingCliCommand();
     private final DayoneNoteFactory dayoneNoteFactory;
 
     @Inject
-    public DayonePusher(DayoneNoteFactory dayoneNoteFactory) {
+    public DayoneCliPusher(DayoneNoteFactory dayoneNoteFactory) {
         this.dayoneNoteFactory = checkNotNull(dayoneNoteFactory);
     }
 
