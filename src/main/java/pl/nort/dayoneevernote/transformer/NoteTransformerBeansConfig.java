@@ -36,7 +36,10 @@ public class NoteTransformerBeansConfig {
 
         Function<Note, Note> dropTitle = new DropTitleTransformer();
 
-        return Functions.compose(dropTitle, extractDateFromTitle);
+        Function<Note, Note> shiftHours = new ShiftDateTransformer(19);
+
+        return Functions.compose(shiftHours,
+                Functions.compose(dropTitle, extractDateFromTitle));
     }
 
 }
