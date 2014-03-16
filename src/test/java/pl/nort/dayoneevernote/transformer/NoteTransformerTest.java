@@ -33,7 +33,7 @@ public abstract class NoteTransformerTest {
 
     @Before
     public void setUpTransformerTest() throws Exception {
-        sourceNote = Notes.defaultNote();
+        sourceNote = Notes.empty();
     }
 
 }

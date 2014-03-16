@@ -22,6 +22,7 @@ import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.note.Coordinates;
 import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.note.Notes;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -50,6 +51,7 @@ public class NoteFactory {
                 z = note.getAttributes().getAltitude();
 
         return new Note.Builder()
+            .cloneOf(Notes.empty())
             .withTitle(Objects.firstNonNull(note.getTitle(), ""))
             .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
             .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC))

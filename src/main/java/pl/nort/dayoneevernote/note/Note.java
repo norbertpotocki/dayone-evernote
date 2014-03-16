@@ -16,7 +16,10 @@
 package pl.nort.dayoneevernote.note;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
+
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,12 +34,14 @@ public class Note {
     private final String body;
     private final DateTime creationTime;
     private final Coordinates location;
+    private final Set<String> labels;
 
-    public Note(String title, String body, DateTime creationTime, Coordinates location) {
+    public Note(String title, String body, DateTime creationTime, Coordinates location, Set<String> labels) {
         this.title = checkNotNull(title);
         this.body = checkNotNull(body);
         this.creationTime = checkNotNull(creationTime);
         this.location = checkNotNull(location);
+        this.labels = ImmutableSet.copyOf(checkNotNull(labels));
     }
 
     public String getTitle() {
@@ -55,6 +60,10 @@ public class Note {
         return location;
     }
 
+    public Set<String> getLabels() {
+        return labels;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -62,12 +71,13 @@ public class Note {
             .add("body", body)
             .add("creationTime", creationTime)
             .add("location", location)
+            .add("labels", labels)
             .toString();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(title, body, creationTime, location);
+        return Objects.hashCode(title, body, creationTime, location, labels);
     }
 
     @Override
@@ -79,7 +89,11 @@ public class Note {
             return false;
         }
         final Note other = (Note) obj;
-        return Objects.equal(this.title, other.title) && Objects.equal(this.body, other.body) && Objects.equal(this.creationTime, other.creationTime) && Objects.equal(this.location, other.location);
+        return Objects.equal(this.title, other.title) &&
+               Objects.equal(this.body, other.body) &&
+               Objects.equal(this.creationTime, other.creationTime) &&
+               Objects.equal(this.location, other.location) &&
+               Objects.equal(this.labels, other.labels);
     }
 
     public static class Builder {
@@ -88,9 +102,10 @@ public class Note {
         private String body;
         private DateTime creationTime;
         private Coordinates location;
+        private Set<String> labels;
 
         public Note build() {
-            return new Note(title, body, creationTime, location);
+            return new Note(title, body, creationTime, location, labels);
         }
 
         public Builder withTitle(String title) {
@@ -113,11 +128,17 @@ public class Note {
             return this;
         }
 
+        public Builder withLabels(Set<String> labels) {
+            this.labels = ImmutableSet.copyOf(labels);
+            return this;
+        }
+
         public Builder cloneOf(Note note) {
             return this.withBody(note.getBody())
                 .withCreationTime(note.getCreationTime())
                 .withTitle(note.getTitle())
-                .withLocation(note.getLocation());
+                .withLocation(note.getLocation())
+                .withLabels(note.getLabels());
         }
     }
 }

@@ -33,7 +33,7 @@ public class DayoneNoteFactoryTest {
 
     private ExternalNoteFactory<Note> factory = new DayoneNoteFactory();
     private Note note = new Note.Builder()
-            .cloneOf(Notes.defaultNote())
+            .cloneOf(Notes.empty())
             .withTitle("testTitle")
             .withCreationTime(new DateTime())
             .withBody(NOTE_BODY)

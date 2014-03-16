@@ -63,7 +63,7 @@ public class TitleMatchPredicateTest {
         predicate = new TitleMatchPredicate(pattern);
 
         Note note = new Note.Builder()
-            .cloneOf(Notes.defaultNote())
+            .cloneOf(Notes.empty())
             .withTitle(title)
             .build();
 
