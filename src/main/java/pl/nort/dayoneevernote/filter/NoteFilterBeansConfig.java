@@ -16,12 +16,28 @@
 package pl.nort.dayoneevernote.filter;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import pl.nort.dayoneevernote.note.Note;
 
 /**
- * Defines filtering for notes
+ * Configure some default filters
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public interface FilterStrategy extends Predicate<Note> {
+@Configuration
+public class NoteFilterBeansConfig {
+
+    @Bean @Primary
+    public Predicate<Note> dateTitleFilterStrategy() {
+        return new TitleMatchPredicate("[1-2][0-9]{3}/[01][0-9]/[0-3][0-9].*");
+    }
+
+    @Bean
+    public Predicate<Note> allTitlesExceptDuplicatesFilterStrategy() {
+        return Predicates.not(new TitleMatchPredicate(".*[Dd]uplicate.*"));
+    }
+
 }

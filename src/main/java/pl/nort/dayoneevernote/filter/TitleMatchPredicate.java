@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public class TitleMatchPredicate implements FilterStrategy {
+public class TitleMatchPredicate implements NoteFilter {
 
     private final String pattern;
 
