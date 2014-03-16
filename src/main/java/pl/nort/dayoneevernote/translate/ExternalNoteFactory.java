@@ -13,31 +13,23 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package pl.nort.dayoneevernote.dayone.convert;
+package pl.nort.dayoneevernote.translate;
 
-import com.overzealous.remark.Remark;
-import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.note.Note;
-import pl.nort.dayoneevernote.translate.ExternalNoteFactory;
 
 /**
- * Builds Dayone note from a {@link pl.nort.dayoneevernote.note.Note}
+ * Factory for external notes built from a {@link pl.nort.dayoneevernote.note.Note}
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-@Component
-public class DayoneNoteFactory implements ExternalNoteFactory<Note> {
+public interface ExternalNoteFactory<T> {
 
-    private final Remark remark = new Remark();
-
-    @Override
-    public Note fromNote(Note note) {
-
-        Note.Builder builder = new Note.Builder();
-        builder.cloneOf(note)
-            .withBody(remark.convert(note.getBody()));
-
-        return builder.build();
-    }
+    /**
+     * Builds external note from a {@link pl.nort.dayoneevernote.note.Note}
+     *
+     * @param note note to use as a data source
+     * @return
+     */
+    T fromNote(Note note);
 
 }
