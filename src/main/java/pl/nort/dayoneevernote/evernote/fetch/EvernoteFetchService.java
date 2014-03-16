@@ -19,6 +19,7 @@ import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
+import com.evernote.edam.type.Notebook;
 import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
@@ -70,7 +71,8 @@ public class EvernoteFetchService {
 
                 for(com.evernote.edam.type.Note note : noteList.getNotes()) {
                     note = noteClient.getNote(note.getGuid(), true, false, false, false);
-                    notes.add(noteFactory.fromEvernoteNote(note));
+                    Notebook notebook = noteClient.getNotebook(note.getNotebookGuid());
+                    notes.add(noteFactory.fromEvernoteNote(note, notebook));
                 }
 
                 firstPosInBatch += BATCH_SIZE;

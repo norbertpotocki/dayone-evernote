@@ -15,19 +15,21 @@
 */
 package pl.nort.dayoneevernote.evernote.translate;
 
+import com.evernote.edam.type.Notebook;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableSet;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.note.Coordinates;
 import pl.nort.dayoneevernote.note.Note;
-import pl.nort.dayoneevernote.note.Notes;
 
 import javax.inject.Inject;
 import java.util.HashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Transforms Evernote's {@link com.evernote.edam.type.Note} to our own {@link pl.nort.dayoneevernote.note.Note}
@@ -44,18 +46,22 @@ public class NoteFactory {
         this.enmlProcessor = checkNotNull(enmlProcessor);
     }
 
-    public Note fromEvernoteNote(com.evernote.edam.type.Note note) throws Exception {
+    public Note fromEvernoteNote(com.evernote.edam.type.Note note, Notebook notebook) throws Exception {
+        checkNotNull(note);
+        checkNotNull(notebook);
+
+        checkState(note.getNotebookGuid().equals(notebook.getGuid()), "notebook guid must match value from the note");
 
         double x = note.getAttributes().getLongitude(),
                 y = note.getAttributes().getLatitude(),
                 z = note.getAttributes().getAltitude();
 
         return new Note.Builder()
-            .cloneOf(Notes.empty())
             .withTitle(Objects.firstNonNull(note.getTitle(), ""))
             .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
             .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC))
             .withLocation(new Coordinates(x, y, z))
+            .withLabels(ImmutableSet.of(notebook.getName()))
             .build();
     }
 
