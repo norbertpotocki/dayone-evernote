@@ -40,7 +40,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filterStrategy;
-    @Inject @Named("dayonePusher") private Pusher pusher;
+    @Inject @Named("dayoneCliPusher") private Pusher pusher;
 
     @Override
     public void run(String... args) {
@@ -52,7 +52,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
         if(!pusher.push(filteredNotes)) {
             System.out.println("Import of some notes failed!");
-        };
+        }
     }
 
 
