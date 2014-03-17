@@ -32,7 +32,7 @@ public abstract class NoteFactoryTest {
 
     protected static final String NOTEBOOK_NAME = "Sample notebook";
     protected static final String NOTEBOOK_GUID = "guid-sample-notebook-xxx";
-    protected static final String NOTEBOOK_CONTENT = "" +
+    protected static final String NOTE_CONTENT = "" +
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n" +
             "<en-note><div>Sample diary entry<br clear=\"none\"/></div></en-note>";
@@ -46,7 +46,7 @@ public abstract class NoteFactoryTest {
     @Before
     public void setUpNoteFactoryTest() throws Exception {
         evernoteNote = new com.evernote.edam.type.Note();
-        evernoteNote.setContent(NOTEBOOK_CONTENT);
+        evernoteNote.setContent(NOTE_CONTENT);
         evernoteNote.setAttributes(new NoteAttributes());
         evernoteNote.setNotebookGuid(NOTEBOOK_GUID);
 
