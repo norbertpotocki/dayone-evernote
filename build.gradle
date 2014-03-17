@@ -39,3 +39,12 @@ jar {
     baseName = 'dayone-evernote'
     version = '1.0.0'
 }
+
+test {
+    exclude '**/*Integration*.*'
+}
+
+
+task integrationTest(type: Test) {
+    include '**/*Integration*.*'
+}

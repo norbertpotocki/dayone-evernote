@@ -19,11 +19,7 @@ import com.evernote.edam.type.NoteAttributes;
 import com.evernote.edam.type.Notebook;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import pl.nort.dayoneevernote.note.Note;
-
-import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
@@ -53,28 +49,5 @@ public abstract class NoteFactoryTest {
         evernoteNotebook = new Notebook();
         evernoteNotebook.setGuid(NOTEBOOK_GUID);
         evernoteNotebook.setName(NOTEBOOK_NAME);
-    }
-
-    @Test
-    public void translatesBodyToHTML() throws Exception {
-        Note resultNote = factory.fromEvernoteNote(evernoteNote, evernoteNotebook);
-
-        assertThat(resultNote.getBody()).containsIgnoringCase("<body><div>Sample diary entry<br clear=\"none\"/></div></body>")
-                .doesNotContain("<en-note>");
-    }
-
-    @Test
-    public void setsNotebookNameAsLabel() throws Exception {
-        Note resultNote = factory.fromEvernoteNote(evernoteNote, evernoteNotebook);
-
-        assertThat(resultNote.getLabels()).contains(NOTEBOOK_NAME);
-    }
-
-    @Test
-    public void throwsWhenNotebookGuidDoesntMatch() throws Exception {
-        evernoteNotebook.setGuid(evernoteNotebook.getGuid() + "-jitter");
-
-        thrown.expect(IllegalStateException.class);
-        factory.fromEvernoteNote(evernoteNote, evernoteNotebook);
     }
 }
