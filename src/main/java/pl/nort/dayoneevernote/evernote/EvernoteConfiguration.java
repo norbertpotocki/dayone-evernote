@@ -18,10 +18,16 @@ package pl.nort.dayoneevernote.evernote;
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
+import com.evernote.edam.type.Note;
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.nort.dayoneevernote.evernote.translate.DtdCachingNoteTransformer;
+import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
+import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
 
 /**
  * Evernote configuration
@@ -34,6 +40,9 @@ public class EvernoteConfiguration {
     @Value("${evernote.authToken:youForgotToFillEvernoteAuthToken}")
     private String authToken;
 
+    @Value("${useCachedDTD:false}")
+    private boolean useCachedDTD;
+
     @Bean
     public ClientFactory clientFactory() {
         EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, authToken);
@@ -42,8 +51,13 @@ public class EvernoteConfiguration {
     }
 
     @Bean
-    public ENMLProcessor enmlProcessor() {
-        return new ENMLProcessor();
+    public NoteFactory simpleNoteFactory() {
+        Function<Note, Note> transformer = useCachedDTD ? new DtdCachingNoteTransformer("dtd/enml2.dtd") :
+                Functions.<Note>identity();
+
+        ENMLProcessor enmlProcessor = new ENMLProcessor();
+
+        return new SimpleNoteFactory(enmlProcessor, transformer);
     }
 
 }

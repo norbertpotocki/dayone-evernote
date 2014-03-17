@@ -15,6 +15,8 @@
 */
 package pl.nort.dayoneevernote.evernote.translate;
 
+import com.evernote.edam.type.Note;
+import com.google.common.base.Functions;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.junit.Before;
 
@@ -23,10 +25,10 @@ import org.junit.Before;
  */
 public class SimpleNoteFactoryTest extends NoteFactoryTest {
 
-    private ENMLProcessor enmlProcessor = new ENMLProcessor();
+    private static final ENMLProcessor ENML_PROCESSOR = new ENMLProcessor();
 
     @Before
     public void setUp() throws Exception {
-        factory = new SimpleNoteFactory(enmlProcessor);
+        factory = new SimpleNoteFactory(ENML_PROCESSOR, Functions.<Note>identity());
     }
 }

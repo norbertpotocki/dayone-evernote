@@ -16,16 +16,15 @@
 package pl.nort.dayoneevernote.evernote.translate;
 
 import com.evernote.edam.type.Notebook;
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.note.Coordinates;
 import pl.nort.dayoneevernote.note.Note;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,18 +32,18 @@ import static com.google.common.base.Preconditions.checkState;
 
 /**
  * {@link pl.nort.dayoneevernote.evernote.translate.NoteFactory} using {@link com.syncthemall.enml4j.ENMLProcessor}
- * to convert note content to XHTML
+ * to convert note content to XHTML and additional {@link com.google.common.base.Function} to preprocess the note.
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-@Component
 public class SimpleNoteFactory implements NoteFactory {
 
     private final ENMLProcessor enmlProcessor;
+    private final Function<com.evernote.edam.type.Note, com.evernote.edam.type.Note> transformer;
 
-    @Inject
-    public SimpleNoteFactory(ENMLProcessor enmlProcessor) {
+    public SimpleNoteFactory(ENMLProcessor enmlProcessor, Function<com.evernote.edam.type.Note, com.evernote.edam.type.Note> transformer) {
         this.enmlProcessor = checkNotNull(enmlProcessor);
+        this.transformer = checkNotNull(transformer);
     }
 
     @Override
@@ -53,6 +52,9 @@ public class SimpleNoteFactory implements NoteFactory {
         checkNotNull(notebook);
 
         checkState(note.getNotebookGuid().equals(notebook.getGuid()), "notebook guid must match value from the note");
+
+        // Preprocess note
+        note = transformer.apply(note);
 
         double x = note.getAttributes().getLongitude(),
                 y = note.getAttributes().getLatitude(),
