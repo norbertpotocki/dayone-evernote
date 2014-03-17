@@ -17,6 +17,7 @@ package pl.nort.dayoneevernote.transformer;
 
 import org.junit.Before;
 import org.junit.Test;
+import pl.nort.dayoneevernote.note.Note;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -28,6 +29,11 @@ public class DropTitleTransformerTest extends NoteTransformerTest {
     @Before
     public void setUp() throws Exception {
         transformer = new DropTitleTransformer();
+
+        sourceNote = new Note.Builder()
+                .cloneOf(sourceNote)
+                .withTitle("TEST_TITLE")
+                .build();
     }
 
     @Test
