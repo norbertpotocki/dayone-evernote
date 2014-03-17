@@ -17,13 +17,10 @@ package pl.nort.dayoneevernote.evernote.translate;
 
 import com.evernote.edam.type.NoteAttributes;
 import com.evernote.edam.type.Notebook;
-import com.syncthemall.enml4j.ENMLProcessor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import pl.nort.dayoneevernote.note.Note;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -31,27 +28,23 @@ import static org.fest.assertions.api.Assertions.assertThat;
 /**
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-@RunWith(MockitoJUnitRunner.class)
-public class NoteFactoryTest {
+public abstract class NoteFactoryTest {
 
-    private static final String NOTEBOOK_NAME = "Sample notebook";
-    private static final String NOTEBOOK_GUID = "guid-sample-notebook-xxx";
-    private static final String NOTEBOOK_CONTENT = "" +
+    protected static final String NOTEBOOK_NAME = "Sample notebook";
+    protected static final String NOTEBOOK_GUID = "guid-sample-notebook-xxx";
+    protected static final String NOTEBOOK_CONTENT = "" +
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">\n" +
             "<en-note><div>Sample diary entry<br clear=\"none\"/></div></en-note>";
 
     @Rule public ExpectedException thrown = ExpectedException.none();
 
-    private ENMLProcessor enmlProcessor = new ENMLProcessor();
-    private NoteFactory factory;
-    private com.evernote.edam.type.Note evernoteNote;
-    private Notebook evernoteNotebook;
+    protected NoteFactory factory;
+    protected com.evernote.edam.type.Note evernoteNote;
+    protected Notebook evernoteNotebook;
 
     @Before
-    public void setUp() throws Exception {
-        factory = new NoteFactory(enmlProcessor);
-
+    public void setUpNoteFactoryTest() throws Exception {
         evernoteNote = new com.evernote.edam.type.Note();
         evernoteNote.setContent(NOTEBOOK_CONTENT);
         evernoteNote.setAttributes(new NoteAttributes());

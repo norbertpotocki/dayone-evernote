@@ -15,14 +15,18 @@
 */
 package pl.nort.dayoneevernote.evernote.translate;
 
-import com.evernote.edam.type.Notebook;
-import pl.nort.dayoneevernote.note.Note;
+import com.syncthemall.enml4j.ENMLProcessor;
+import org.junit.Before;
 
 /**
- * Transforms Evernote's {@link com.evernote.edam.type.Note} to our own {@link pl.nort.dayoneevernote.note.Note}
- *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public interface NoteFactory {
-    Note fromEvernoteNote(com.evernote.edam.type.Note note, Notebook notebook) throws Exception;
+public class SimpleNoteFactoryTest extends NoteFactoryTest {
+
+    private ENMLProcessor enmlProcessor = new ENMLProcessor();
+
+    @Before
+    public void setUp() throws Exception {
+        factory = new SimpleNoteFactory(enmlProcessor);
+    }
 }
