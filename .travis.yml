@@ -1,5 +1,7 @@
 language: java
-install: ./script/install-deps-in-maven.sh
+install:
+  - ./script/install-deps-in-maven.sh
+  - ./script/cache-evernote-dtd.sh
 jdk:
   - oraclejdk7
   - openjdk7
