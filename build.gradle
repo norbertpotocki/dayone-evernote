@@ -22,6 +22,7 @@ dependencies {
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
     compile group: 'com.syncthemall', name: 'enml4j', version: '1.0.0'
     compile group: 'org.codehaus.woodstox', name: 'woodstox-core-asl', version: '4.2.0'
+    compile group: 'com.googlecode.plist', name: 'dd-plist', version: '1.8'
 
     // Remark
     compile group: 'com.overzealous', name: 'remark', version: '0.9.3'
