@@ -18,6 +18,8 @@ package pl.nort.dayoneevernote;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -39,6 +41,8 @@ import java.util.Set;
 @ComponentScan
 public class DayoneEvernoteApplication implements CommandLineRunner {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DayoneEvernoteApplication.class);
+
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filter;
     @Inject private Function<Note, Note> transformer;
@@ -51,15 +55,17 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
         Iterable<Note> filteredNotes = Iterables.filter(notes, filter);
         Iterable<Note> transformedNotes = Iterables.transform(filteredNotes, transformer);
 
-        System.out.println("Matched " + Iterables.size(transformedNotes) + " of " + notes.size() + " notes");
+        LOG.info("Matched " + Iterables.size(transformedNotes) + " of " + notes.size() + " notes");
 
         if(!pusher.push(transformedNotes)) {
-            System.out.println("Import of some notes failed!");
+            LOG.warn("Import of some notes failed!");
         }
     }
 
 
     public static void main(String[] args) {
-        SpringApplication.run(DayoneEvernoteApplication.class, args);
+        SpringApplication app = new SpringApplication(DayoneEvernoteApplication.class);
+        app.setShowBanner(false);
+        app.run(args);
     }
 }
