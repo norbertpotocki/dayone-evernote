@@ -46,7 +46,8 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
     @Inject private EvernoteFetchService fetchService;
     @Inject private Predicate<Note> filter;
     @Inject private Function<Note, Note> transformer;
-    @Inject @Named("stdoutPusher") private Pusher pusher;
+    @Inject @Named("stdoutPusher") private Pusher consolePusher;
+    @Inject @Named("dayoneJournalPusher") private Pusher pusher;
 
     @Override
     public void run(String... args) {
@@ -57,6 +58,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
         LOG.info("Matched " + Iterables.size(transformedNotes) + " of " + notes.size() + " notes");
 
+        consolePusher.push(transformedNotes);
         if(!pusher.push(transformedNotes)) {
             LOG.warn("Import of some notes failed!");
         }
