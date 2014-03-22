@@ -40,7 +40,7 @@ public class EvernoteConfiguration {
     @Value("${evernote.authToken:youForgotToFillEvernoteAuthToken}")
     private String authToken;
 
-    @Value("${useCachedDTD:false}")
+    @Value("${evernote.useCachedDTD:false}")
     private boolean useCachedDTD;
 
     @Bean
