@@ -22,12 +22,10 @@ import com.dd.plist.PropertyListParser;
 import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.AbstractPusher;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -36,17 +34,19 @@ import java.util.UUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * Writes notes directly to Dayone journal files under specified journal path
+ *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-@Component
 public class DayoneJournalPusher extends AbstractPusher {
 
     private static final Logger LOG = LoggerFactory.getLogger(DayoneJournalPusher.class);
 
     private final DayoneNoteFactory dayoneNoteFactory;
+    private final String journalPath;
 
-    @Inject
-    public DayoneJournalPusher(DayoneNoteFactory dayoneNoteFactory) {
+    public DayoneJournalPusher(String journalPath, DayoneNoteFactory dayoneNoteFactory) {
+        this.journalPath = checkNotNull(journalPath);
         this.dayoneNoteFactory = checkNotNull(dayoneNoteFactory);
     }
 
@@ -77,7 +77,7 @@ public class DayoneJournalPusher extends AbstractPusher {
         root.put("UUID", uuid);
 
         try {
-            PropertyListParser.saveAsXML(root, new File("./" + uuid + ".doentry"));
+            PropertyListParser.saveAsXML(root, new File(journalPath + "/" + uuid + ".doentry"));
         } catch (IOException e) {
             LOG.error("Failed to save note: " + dayoneNote, e);
             return false;
