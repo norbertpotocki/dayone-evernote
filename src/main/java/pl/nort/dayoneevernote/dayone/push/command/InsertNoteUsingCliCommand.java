@@ -15,10 +15,11 @@
 */
 package pl.nort.dayoneevernote.dayone.push.command;
 
+import com.dd.plist.NSDictionary;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
+import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
-import pl.nort.dayoneevernote.note.Note;
 
 import java.io.*;
 import java.util.List;
@@ -26,18 +27,18 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Adds a new entry based on a {@link pl.nort.dayoneevernote.note.Note} to Dayone using CLI
+ * Adds a new entry based on a {@link com.dd.plist.NSDictionary} to Dayone using CLI
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-public class InsertNoteUsingCliCommand implements Predicate<Note> {
+public class InsertNoteUsingCliCommand implements Predicate<NSDictionary> {
 
     private static final String CLI_APP = "dayone";
     private static final String CLI_COMMAND = "new";
     private static final String CREATION_DATE_PARAMETER = "--date=%s";
 
     @Override
-    public boolean apply(Note note) {
+    public boolean apply(NSDictionary note) {
         checkNotNull(note);
 
         ProcessBuilder pb = new ProcessBuilder(prepareShellCommand(note));
@@ -74,14 +75,13 @@ public class InsertNoteUsingCliCommand implements Predicate<Note> {
         return true;
     }
 
-    private void writeNote(Note note, Writer writer) throws IOException {
-        writer.write(note.getTitle() + "\n");
-        writer.write(note.getBody());
+    private void writeNote(NSDictionary note, Writer writer) throws IOException {
+        writer.write(note.get(DayoneNoteFactory.BODY_KEY).toString());
     }
 
-    private List<String> prepareShellCommand(Note note) {
+    private List<String> prepareShellCommand(NSDictionary note) {
         return ImmutableList.of(CLI_APP,
-                String.format(CREATION_DATE_PARAMETER, note.getCreationTime().toString()),
+                String.format(CREATION_DATE_PARAMETER, note.get(DayoneNoteFactory.CREATION_DATE_KEY).toString()),
                 CLI_COMMAND);
     }
 }

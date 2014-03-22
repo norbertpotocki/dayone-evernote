@@ -15,11 +15,8 @@
 */
 package pl.nort.dayoneevernote.dayone.push;
 
-import com.dd.plist.NSArray;
-import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
-import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
@@ -28,8 +25,6 @@ import pl.nort.dayoneevernote.push.AbstractPusher;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -53,31 +48,10 @@ public class DayoneJournalPusher extends AbstractPusher {
     @Override
     public boolean push(Note note) {
 
-        Note dayoneNote = dayoneNoteFactory.fromNote(note);
-
-        String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-
-        NSDate creationDate;
-        try {
-            creationDate = new NSDate(dayoneNote.getCreationTime().toString("yyyy-MM-dd'T'HH:mm:ss'Z'Z"));
-        } catch (ParseException e) {
-            return false;
-        }
-
-        String body = (Strings.isNullOrEmpty(dayoneNote.getTitle()) ? "" : dayoneNote.getTitle() + "\n\n")
-                + dayoneNote.getBody();
-
-        NSDictionary root = new NSDictionary();
-
-        root.put("Creation Date", creationDate);
-        root.put("Entry Text", body);
-        root.put("Starred", false);
-        root.put("Tags", new NSArray(0));
-        root.put("Time Zone", "America/Vancouver");
-        root.put("UUID", uuid);
+        NSDictionary dayoneNote = dayoneNoteFactory.fromNote(note);
 
         try {
-            PropertyListParser.saveAsXML(root, new File(journalPath + "/" + uuid + ".doentry"));
+            PropertyListParser.saveAsXML(dayoneNote, new File(journalPath + "/" + dayoneNote.get(DayoneNoteFactory.UUID_KEY) + ".doentry"));
         } catch (IOException e) {
             LOG.error("Failed to save note: " + dayoneNote, e);
             return false;

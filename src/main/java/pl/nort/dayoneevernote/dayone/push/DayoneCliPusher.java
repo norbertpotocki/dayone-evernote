@@ -43,10 +43,7 @@ public class DayoneCliPusher extends AbstractPusher {
 
     @Override
     public boolean push(Note note) {
-
-        Note dayoneNote = dayoneNoteFactory.fromNote(note);
-
-        return insertNoteCommand.apply(dayoneNote);
+        return insertNoteCommand.apply(dayoneNoteFactory.fromNote(note));
     }
 
 }
