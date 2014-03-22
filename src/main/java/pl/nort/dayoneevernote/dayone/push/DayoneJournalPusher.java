@@ -20,6 +20,8 @@ import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
 import pl.nort.dayoneevernote.note.Note;
@@ -38,6 +40,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Component
 public class DayoneJournalPusher extends AbstractPusher {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DayoneJournalPusher.class);
 
     private final DayoneNoteFactory dayoneNoteFactory;
 
@@ -75,6 +79,7 @@ public class DayoneJournalPusher extends AbstractPusher {
         try {
             PropertyListParser.saveAsXML(root, new File("./" + uuid + ".doentry"));
         } catch (IOException e) {
+            LOG.error("Failed to save note: " + dayoneNote, e);
             return false;
         }
 
