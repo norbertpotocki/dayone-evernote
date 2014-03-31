@@ -18,6 +18,7 @@ package pl.nort.dayoneevernote.dayone.convert;
 import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.note.Notes;
@@ -37,7 +38,7 @@ public class DayoneNoteFactoryTest {
     private Note note = new Note.Builder()
             .cloneOf(Notes.empty())
             .withTitle("testTitle")
-            .withCreationTime(new DateTime(2014, 1, 1, 12, 0))
+            .withCreationTime(new DateTime(2014, 1, 1, 12, 0, DateTimeZone.UTC))
             .withBody(NOTE_BODY)
             .build();
 
@@ -47,7 +48,7 @@ public class DayoneNoteFactoryTest {
         NSDictionary result = factory.fromNote(note);
 
         assertThat(((NSDate) result.get(DayoneNoteFactory.CREATION_DATE_KEY)).getDate().getTime())
-                .isEqualTo(note.getCreationTime().minusHours(8).toDate().getTime());
+                .isEqualTo(note.getCreationTime().toDate().getTime());
     }
 
     @Test
