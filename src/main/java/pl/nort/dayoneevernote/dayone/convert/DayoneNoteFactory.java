@@ -71,6 +71,11 @@ public class DayoneNoteFactory implements ExternalNoteFactory<NSDictionary> {
         root.put(TIMEZONE_KEY, "America/Vancouver");
         root.put(UUID_KEY, uuid);
 
+        LocationBuilder.addLocation(root, new LocationBuilder()
+                .withLongitude(note.getLocation().getX())
+                .withLatitude(note.getLocation().getY())
+                .build());
+
         return root;
     }
 
