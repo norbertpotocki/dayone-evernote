@@ -18,6 +18,7 @@ package pl.nort.dayoneevernote.evernote.translate;
 import com.evernote.edam.type.Notebook;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.syncthemall.enml4j.ENMLProcessor;
 import org.joda.time.DateTime;
@@ -56,17 +57,28 @@ public class SimpleNoteFactory implements NoteFactory {
         // Preprocess note
         note = transformer.apply(note);
 
-        double x = note.getAttributes().getLongitude(),
-                y = note.getAttributes().getLatitude(),
-                z = note.getAttributes().getAltitude();
-
         return new Note.Builder()
             .withTitle(Objects.firstNonNull(note.getTitle(), ""))
             .withBody(enmlProcessor.noteToHTMLString(note, new HashMap<String, String>()))
             .withCreationTime(new DateTime(note.getCreated(), DateTimeZone.UTC))
-            .withLocation(new Coordinates(x, y, z))
+            .withLocation(getLocation(note))
             .withLabels(ImmutableSet.of(notebook.getName()))
             .build();
+    }
+
+    private Optional<Coordinates> getLocation(com.evernote.edam.type.Note note) {
+
+        Optional<Coordinates> location = Optional.absent();
+
+        if(note.getAttributes().isSetLatitude() && note.getAttributes().isSetLongitude()) {
+            double x = note.getAttributes().getLongitude(),
+                    y = note.getAttributes().getLatitude(),
+                    z = note.getAttributes().getAltitude();
+
+            location = Optional.of(new Coordinates(x, y, z));
+        }
+
+        return location;
     }
 
 }

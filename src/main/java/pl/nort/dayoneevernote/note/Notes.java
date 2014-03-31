@@ -15,6 +15,7 @@
 */
 package pl.nort.dayoneevernote.note;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
 
@@ -28,7 +29,7 @@ public class Notes {
     private static final String TITLE_DEFAULT = "";
     private static final String BODY_DEFAULT = "";
     private static final DateTime CREATION_TIME_DEFAULT = new DateTime(0);
-    private static final Coordinates LOCATION_DEFAULT = new Coordinates(0, 0, 0);
+    private static final Optional<Coordinates> LOCATION_DEFAULT = Optional.absent();
 
     public static Note empty() {
 

@@ -16,6 +16,7 @@
 package pl.nort.dayoneevernote.note;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
 
@@ -33,10 +34,10 @@ public class Note {
     private final String title;
     private final String body;
     private final DateTime creationTime;
-    private final Coordinates location;
+    private final Optional<Coordinates> location;
     private final Set<String> labels;
 
-    public Note(String title, String body, DateTime creationTime, Coordinates location, Set<String> labels) {
+    public Note(String title, String body, DateTime creationTime, Optional<Coordinates> location, Set<String> labels) {
         this.title = checkNotNull(title);
         this.body = checkNotNull(body);
         this.creationTime = checkNotNull(creationTime);
@@ -56,7 +57,7 @@ public class Note {
         return creationTime;
     }
 
-    public Coordinates getLocation() {
+    public Optional<Coordinates> getLocation() {
         return location;
     }
 
@@ -101,7 +102,7 @@ public class Note {
         private String title;
         private String body;
         private DateTime creationTime;
-        private Coordinates location;
+        private Optional<Coordinates> location;
         private Set<String> labels;
 
         public Note build() {
@@ -123,7 +124,7 @@ public class Note {
             return this;
         }
 
-        public Builder withLocation(Coordinates coordinates) {
+        public Builder withLocation(Optional<Coordinates> coordinates) {
             this.location = coordinates;
             return this;
         }
