@@ -50,7 +50,7 @@ public class EvernoteConfiguration {
 
     @Bean
     public ClientFactory clientFactory() {
-        EvernoteService environment = EvernoteService.valueOf(service);
+        EvernoteService environment = EvernoteService.valueOf(service.toUpperCase());
 
         EvernoteAuth evernoteAuth = new EvernoteAuth(environment, authToken);
 
