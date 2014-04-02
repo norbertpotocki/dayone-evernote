@@ -11,6 +11,10 @@ repositories {
     maven {
         url 'http://repo.spring.io/libs-snapshot'
     }
+
+    maven {
+        url 'https://raw.github.com/fernandezpablo85/scribe-java/mvn-repo/'
+    }
     mavenLocal()
 }
 
@@ -22,6 +26,9 @@ dependencies {
 
     // Evernote support
     compile group: 'com.evernote', name: 'evernote-api', version: '1.25.1'
+
+    // OAuth
+    compile group: 'org.scribe', name: 'scribe', version: '1.3.6'
 
     // Dayone  support
     compile group: 'com.syncthemall', name: 'enml4j', version: '1.0.0'
