@@ -15,6 +15,10 @@
 */
 package pl.nort.dayoneevernote.evernote;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
@@ -22,9 +26,7 @@ import com.evernote.edam.type.Note;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.syncthemall.enml4j.ENMLProcessor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 import pl.nort.dayoneevernote.evernote.translate.DtdCachingNoteTransformer;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
@@ -43,9 +45,14 @@ public class EvernoteConfiguration {
     @Value("${evernote.useCachedDTD:false}")
     private boolean useCachedDTD;
 
+    @Value("${evernote.service:production}")
+    private String service;
+
     @Bean
     public ClientFactory clientFactory() {
-        EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, authToken);
+        EvernoteService environment = EvernoteService.valueOf(service);
+
+        EvernoteAuth evernoteAuth = new EvernoteAuth(environment, authToken);
 
         return new ClientFactory(evernoteAuth);
     }
