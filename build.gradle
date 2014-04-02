@@ -17,9 +17,13 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '1.0.0.BUILD-SNAPSHOT'
     compile group: 'com.google.guava', name: 'guava', version: '16.0.1'
-    compile group: 'com.evernote', name: 'evernote-api', version: '1.25.1'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
+
+    // Evernote support
+    compile group: 'com.evernote', name: 'evernote-api', version: '1.25.1'
+
+    // Dayone  support
     compile group: 'com.syncthemall', name: 'enml4j', version: '1.0.0'
     compile group: 'org.codehaus.woodstox', name: 'woodstox-core-asl', version: '4.2.0'
     compile group: 'com.googlecode.plist', name: 'dd-plist', version: '1.8'
