@@ -15,8 +15,6 @@
 */
 package pl.nort.dayoneevernote;
 
-import java.util.Set;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -30,8 +28,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableList;
 
+import pl.nort.dayoneevernote.convert.NotesConverter;
 import pl.nort.dayoneevernote.fetch.Fetcher;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.Pusher;
@@ -54,17 +53,9 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Set<Note> notes = fetcher.getNotes();
+        Runnable command = new NotesConverter(fetcher, filter, transformer, ImmutableList.of(consolePusher, pusher));
 
-        Iterable<Note> filteredNotes = Iterables.filter(notes, filter);
-        Iterable<Note> transformedNotes = Iterables.transform(filteredNotes, transformer);
-
-        LOG.info("Matched " + Iterables.size(transformedNotes) + " of " + notes.size() + " notes");
-
-        consolePusher.push(transformedNotes);
-        if(!pusher.push(transformedNotes)) {
-            LOG.warn("Import of some notes failed!");
-        }
+        command.run();
     }
 
 
