@@ -19,14 +19,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.evernote.auth.EvernoteAuth;
-import com.evernote.auth.EvernoteService;
-import com.evernote.clients.ClientFactory;
 import com.evernote.edam.type.Note;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.syncthemall.enml4j.ENMLProcessor;
 
+import pl.nort.dayoneevernote.evernote.auth.ClientFactoryFactory;
+import pl.nort.dayoneevernote.evernote.auth.ConstantTokenFactory;
 import pl.nort.dayoneevernote.evernote.translate.DtdCachingNoteTransformer;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
@@ -49,12 +48,8 @@ public class BeansConfiguration {
     private String service;
 
     @Bean
-    public ClientFactory clientFactory() {
-        EvernoteService environment = EvernoteService.valueOf(service.toUpperCase());
-
-        EvernoteAuth evernoteAuth = new EvernoteAuth(environment, authToken);
-
-        return new ClientFactory(evernoteAuth);
+    public ClientFactoryFactory clientFactoryFactory() {
+        return new ClientFactoryFactory(new ConstantTokenFactory(authToken), service);
     }
 
     @Bean

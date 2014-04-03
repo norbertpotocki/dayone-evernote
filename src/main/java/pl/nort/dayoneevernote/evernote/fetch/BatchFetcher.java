@@ -24,12 +24,12 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
 import com.evernote.edam.type.Notebook;
 
+import pl.nort.dayoneevernote.evernote.auth.ClientFactoryFactory;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 import pl.nort.dayoneevernote.fetch.Fetcher;
@@ -48,13 +48,13 @@ public class BatchFetcher implements Fetcher {
     private static final String SERVICE_NAME = "evernote";
     private static final int BATCH_SIZE = 100;
 
-    private final ClientFactory clientFactory;
+    private final ClientFactoryFactory clientFactoryFactory;
     private final NoteFactory noteFactory;
 
     @Inject
-    public BatchFetcher(ClientFactory clientFactory, NoteFactory noteFactory) {
+    public BatchFetcher(ClientFactoryFactory clientFactoryFactory, NoteFactory noteFactory) {
         this.noteFactory = checkNotNull(noteFactory);
-        this.clientFactory = checkNotNull(clientFactory);
+        this.clientFactoryFactory = checkNotNull(clientFactoryFactory);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BatchFetcher implements Fetcher {
         List<Note> notes = new LinkedList<>();
 
         try {
-            NoteStoreClient noteClient = clientFactory.createNoteStoreClient();
+            NoteStoreClient noteClient = clientFactoryFactory.getClientFactory().createNoteStoreClient();
 
             // Select all notes
             NoteFilter noteFilter = new NoteFilter();

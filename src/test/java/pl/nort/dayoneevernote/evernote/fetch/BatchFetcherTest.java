@@ -26,10 +26,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.evernote.clients.ClientFactory;
 import com.evernote.edam.error.EDAMUserException;
 
+import pl.nort.dayoneevernote.evernote.auth.ClientFactoryFactory;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 import pl.nort.dayoneevernote.fetch.Fetcher;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -40,18 +42,21 @@ public class BatchFetcherTest {
 
     @Rule public ExpectedException thrown = ExpectedException.none();
 
-    @Mock private ClientFactory clientFactory;
+    @Mock private ClientFactoryFactory clientFactoryFactory;
     @Mock private NoteFactory noteFactory;
     private Fetcher service;
 
     @Before
     public void setUp() throws Exception {
-        service = new BatchFetcher(clientFactory, noteFactory);
+        service = new BatchFetcher(clientFactoryFactory, noteFactory);
     }
 
     @Test
     public void getNotesShouldWrapClientException() throws Exception {
+        ClientFactory clientFactory = mock(ClientFactory.class);
         when(clientFactory.createNoteStoreClient()).thenThrow(new EDAMUserException());
+
+        when(clientFactoryFactory.getClientFactory()).thenReturn(clientFactory);
 
         thrown.expect(ConnectionException.class);
         service.getNotes();
