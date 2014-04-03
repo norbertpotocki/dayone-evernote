@@ -25,11 +25,6 @@ import pl.nort.dayoneevernote.note.Note;
 public interface Pusher {
 
     /**
-     * Push a note
-     */
-    boolean push(Note note);
-
-    /**
      * Push a set of notes
      */
     boolean push(Iterable<Note> notes);

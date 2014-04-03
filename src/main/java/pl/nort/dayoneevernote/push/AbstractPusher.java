@@ -35,4 +35,9 @@ public abstract class AbstractPusher implements Pusher {
 
         return true;
     }
+
+    /**
+     * Push a note
+     */
+    public abstract boolean push(Note note);
 }
