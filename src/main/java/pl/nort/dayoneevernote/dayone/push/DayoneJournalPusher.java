@@ -15,16 +15,18 @@
 */
 package pl.nort.dayoneevernote.dayone.push;
 
-import com.dd.plist.NSDictionary;
-import com.dd.plist.PropertyListParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
-import pl.nort.dayoneevernote.note.Note;
-import pl.nort.dayoneevernote.push.AbstractPusher;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.dd.plist.NSDictionary;
+import com.dd.plist.PropertyListParser;
+
+import pl.nort.dayoneevernote.dayone.convert.NoteFactory;
+import pl.nort.dayoneevernote.note.Note;
+import pl.nort.dayoneevernote.push.AbstractPusher;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,21 +39,21 @@ public class DayoneJournalPusher extends AbstractPusher {
 
     private static final Logger LOG = LoggerFactory.getLogger(DayoneJournalPusher.class);
 
-    private final DayoneNoteFactory dayoneNoteFactory;
+    private final NoteFactory noteFactory;
     private final String journalPath;
 
-    public DayoneJournalPusher(String journalPath, DayoneNoteFactory dayoneNoteFactory) {
+    public DayoneJournalPusher(String journalPath, NoteFactory noteFactory) {
         this.journalPath = checkNotNull(journalPath);
-        this.dayoneNoteFactory = checkNotNull(dayoneNoteFactory);
+        this.noteFactory = checkNotNull(noteFactory);
     }
 
     @Override
     public boolean push(Note note) {
 
-        NSDictionary dayoneNote = dayoneNoteFactory.fromNote(note);
+        NSDictionary dayoneNote = noteFactory.fromNote(note);
 
         try {
-            PropertyListParser.saveAsXML(dayoneNote, new File(journalPath + "/" + dayoneNote.get(DayoneNoteFactory.UUID_KEY) + ".doentry"));
+            PropertyListParser.saveAsXML(dayoneNote, new File(journalPath + "/" + dayoneNote.get(NoteFactory.UUID_KEY) + ".doentry"));
         } catch (IOException e) {
             LOG.error("Failed to save note: " + dayoneNote, e);
             return false;

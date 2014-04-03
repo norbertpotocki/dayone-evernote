@@ -18,7 +18,8 @@ package pl.nort.dayoneevernote.dayone;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
+
+import pl.nort.dayoneevernote.dayone.convert.NoteFactory;
 import pl.nort.dayoneevernote.dayone.push.DayoneJournalPusher;
 import pl.nort.dayoneevernote.push.Pusher;
 
@@ -34,7 +35,7 @@ public class DayoneConfiguration {
     private String journalPath;
 
     @Bean
-    public Pusher dayoneJournalPusher(DayoneNoteFactory dayoneNoteFactory) {
-        return new DayoneJournalPusher(journalPath, dayoneNoteFactory);
+    public Pusher dayoneJournalPusher(NoteFactory noteFactory) {
+        return new DayoneJournalPusher(journalPath, noteFactory);
     }
 }

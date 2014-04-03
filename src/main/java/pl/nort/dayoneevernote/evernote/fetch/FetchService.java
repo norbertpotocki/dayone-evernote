@@ -15,21 +15,24 @@
 */
 package pl.nort.dayoneevernote.evernote.fetch;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Component;
+
 import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
 import com.evernote.edam.type.Notebook;
-import org.springframework.stereotype.Component;
+
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 import pl.nort.dayoneevernote.note.Note;
-
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -39,7 +42,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Component
-public class EvernoteFetchService {
+public class FetchService {
 
     private static final String SERVICE_NAME = "evernote";
     private static final int BATCH_SIZE = 100;
@@ -48,7 +51,7 @@ public class EvernoteFetchService {
     private final NoteFactory noteFactory;
 
     @Inject
-    public EvernoteFetchService(ClientFactory clientFactory, NoteFactory noteFactory) {
+    public FetchService(ClientFactory clientFactory, NoteFactory noteFactory) {
         this.noteFactory = checkNotNull(noteFactory);
         this.clientFactory = checkNotNull(clientFactory);
     }

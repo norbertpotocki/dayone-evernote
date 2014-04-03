@@ -15,13 +15,14 @@
 */
 package pl.nort.dayoneevernote.dayone.push;
 
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Component;
-import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
+
+import pl.nort.dayoneevernote.dayone.convert.NoteFactory;
 import pl.nort.dayoneevernote.dayone.push.command.InsertNoteUsingCliCommand;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.AbstractPusher;
-
-import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,16 +35,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DayoneCliPusher extends AbstractPusher {
 
     private final InsertNoteUsingCliCommand insertNoteCommand = new InsertNoteUsingCliCommand();
-    private final DayoneNoteFactory dayoneNoteFactory;
+    private final NoteFactory noteFactory;
 
     @Inject
-    public DayoneCliPusher(DayoneNoteFactory dayoneNoteFactory) {
-        this.dayoneNoteFactory = checkNotNull(dayoneNoteFactory);
+    public DayoneCliPusher(NoteFactory noteFactory) {
+        this.noteFactory = checkNotNull(noteFactory);
     }
 
     @Override
     public boolean push(Note note) {
-        return insertNoteCommand.apply(dayoneNoteFactory.fromNote(note));
+        return insertNoteCommand.apply(noteFactory.fromNote(note));
     }
 
 }

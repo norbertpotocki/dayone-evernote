@@ -15,18 +15,20 @@
 */
 package pl.nort.dayoneevernote.dayone.convert;
 
+import java.text.ParseException;
+import java.util.UUID;
+
+import org.springframework.stereotype.Component;
+
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDate;
 import com.dd.plist.NSDictionary;
 import com.google.common.base.Strings;
 import com.overzealous.remark.Remark;
-import org.springframework.stereotype.Component;
+
 import pl.nort.dayoneevernote.exception.ConversionException;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.translate.ExternalNoteFactory;
-
-import java.text.ParseException;
-import java.util.UUID;
 
 /**
  * Builds Dayone note from a {@link pl.nort.dayoneevernote.note.Note}
@@ -34,7 +36,7 @@ import java.util.UUID;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Component
-public class DayoneNoteFactory implements ExternalNoteFactory<NSDictionary> {
+public class NoteFactory implements ExternalNoteFactory<NSDictionary> {
 
     public static final String CREATION_DATE_KEY = "Creation Date";
     public static final String BODY_KEY = "Entry Text";

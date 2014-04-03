@@ -32,12 +32,12 @@ import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
 
 /**
- * Evernote configuration
+ * Evernote beans configuration
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Configuration
-public class EvernoteConfiguration {
+public class BeansConfiguration {
 
     @Value("${evernote.authToken:youForgotToFillEvernoteAuthToken}")
     private String authToken;

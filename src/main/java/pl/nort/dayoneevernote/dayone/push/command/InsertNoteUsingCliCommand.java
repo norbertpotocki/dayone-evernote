@@ -15,14 +15,20 @@
 */
 package pl.nort.dayoneevernote.dayone.push.command;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.List;
+
 import com.dd.plist.NSDictionary;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import pl.nort.dayoneevernote.dayone.convert.DayoneNoteFactory;
-import pl.nort.dayoneevernote.exception.ConnectionException;
 
-import java.io.*;
-import java.util.List;
+import pl.nort.dayoneevernote.dayone.convert.NoteFactory;
+import pl.nort.dayoneevernote.exception.ConnectionException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -76,12 +82,12 @@ public class InsertNoteUsingCliCommand implements Predicate<NSDictionary> {
     }
 
     private void writeNote(NSDictionary note, Writer writer) throws IOException {
-        writer.write(note.get(DayoneNoteFactory.BODY_KEY).toString());
+        writer.write(note.get(NoteFactory.BODY_KEY).toString());
     }
 
     private List<String> prepareShellCommand(NSDictionary note) {
         return ImmutableList.of(CLI_APP,
-                String.format(CREATION_DATE_PARAMETER, note.get(DayoneNoteFactory.CREATION_DATE_KEY).toString()),
+                String.format(CREATION_DATE_PARAMETER, note.get(NoteFactory.CREATION_DATE_KEY).toString()),
                 CLI_COMMAND);
     }
 }

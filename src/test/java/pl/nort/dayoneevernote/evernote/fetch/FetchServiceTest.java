@@ -15,8 +15,6 @@
 */
 package pl.nort.dayoneevernote.evernote.fetch;
 
-import com.evernote.clients.ClientFactory;
-import com.evernote.edam.error.EDAMUserException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,6 +22,10 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.evernote.clients.ClientFactory;
+import com.evernote.edam.error.EDAMUserException;
+
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
 
@@ -33,17 +35,17 @@ import static org.mockito.Mockito.when;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @RunWith(MockitoJUnitRunner.class)
-public class EvernoteFetchServiceTest {
+public class FetchServiceTest {
 
     @Rule public ExpectedException thrown = ExpectedException.none();
 
     @Mock private ClientFactory clientFactory;
     @Mock private NoteFactory noteFactory;
-    private EvernoteFetchService service;
+    private FetchService service;
 
     @Before
     public void setUp() throws Exception {
-        service = new EvernoteFetchService(clientFactory, noteFactory);
+        service = new FetchService(clientFactory, noteFactory);
     }
 
     @Test
