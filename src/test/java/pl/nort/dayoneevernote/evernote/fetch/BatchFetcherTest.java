@@ -28,6 +28,7 @@ import com.evernote.edam.error.EDAMUserException;
 
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
+import pl.nort.dayoneevernote.fetch.Fetcher;
 
 import static org.mockito.Mockito.when;
 
@@ -35,17 +36,17 @@ import static org.mockito.Mockito.when;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @RunWith(MockitoJUnitRunner.class)
-public class FetchServiceTest {
+public class BatchFetcherTest {
 
     @Rule public ExpectedException thrown = ExpectedException.none();
 
     @Mock private ClientFactory clientFactory;
     @Mock private NoteFactory noteFactory;
-    private FetchService service;
+    private Fetcher service;
 
     @Before
     public void setUp() throws Exception {
-        service = new FetchService(clientFactory, noteFactory);
+        service = new BatchFetcher(clientFactory, noteFactory);
     }
 
     @Test

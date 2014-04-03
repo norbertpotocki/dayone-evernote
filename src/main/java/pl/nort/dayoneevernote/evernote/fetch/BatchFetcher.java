@@ -32,6 +32,7 @@ import com.evernote.edam.type.Notebook;
 
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.exception.ConnectionException;
+import pl.nort.dayoneevernote.fetch.Fetcher;
 import pl.nort.dayoneevernote.note.Note;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,7 +43,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
 @Component
-public class FetchService {
+public class BatchFetcher implements Fetcher {
 
     private static final String SERVICE_NAME = "evernote";
     private static final int BATCH_SIZE = 100;
@@ -51,11 +52,12 @@ public class FetchService {
     private final NoteFactory noteFactory;
 
     @Inject
-    public FetchService(ClientFactory clientFactory, NoteFactory noteFactory) {
+    public BatchFetcher(ClientFactory clientFactory, NoteFactory noteFactory) {
         this.noteFactory = checkNotNull(noteFactory);
         this.clientFactory = checkNotNull(clientFactory);
     }
 
+    @Override
     public Set<Note> getNotes() {
 
         List<Note> notes = new LinkedList<>();

@@ -32,7 +32,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-import pl.nort.dayoneevernote.evernote.fetch.FetchService;
+import pl.nort.dayoneevernote.fetch.Fetcher;
 import pl.nort.dayoneevernote.note.Note;
 import pl.nort.dayoneevernote.push.Pusher;
 
@@ -46,7 +46,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(DayoneEvernoteApplication.class);
 
-    @Inject private FetchService fetchService;
+    @Inject private Fetcher fetcher;
     @Inject private Predicate<Note> filter;
     @Inject private Function<Note, Note> transformer;
     @Inject @Named("stdoutPusher") private Pusher consolePusher;
@@ -54,7 +54,7 @@ public class DayoneEvernoteApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Set<Note> notes = fetchService.getNotes();
+        Set<Note> notes = fetcher.getNotes();
 
         Iterable<Note> filteredNotes = Iterables.filter(notes, filter);
         Iterable<Note> transformedNotes = Iterables.transform(filteredNotes, transformer);
