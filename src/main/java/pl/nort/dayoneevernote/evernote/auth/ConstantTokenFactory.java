@@ -15,8 +15,6 @@
 */
 package pl.nort.dayoneevernote.evernote.auth;
 
-import org.springframework.stereotype.Component;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -24,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author <a href="mailto:norbert.potocki@gmail.com">Norbert Potocki</a>
  */
-@Component
 public class ConstantTokenFactory implements TokenFactory {
 
     private final String token;
