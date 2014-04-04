@@ -47,6 +47,12 @@ public class BeansConfiguration {
     @Value("${evernote.service:production}")
     private String service;
 
+    @Value("${evernote.apiKey:youForgotToFillEvernoteApiKey}")
+    private String apiKey;
+
+    @Value("${evernote.apiSecret:youForgotToFillEvernoteApiSecret}")
+    private String apiSecret;
+
     @Bean
     public ClientFactoryFactory clientFactoryFactory() {
         return new ClientFactoryFactory(new ConstantTokenFactory(authToken), service);
