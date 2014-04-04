@@ -26,6 +26,7 @@ import com.syncthemall.enml4j.ENMLProcessor;
 
 import pl.nort.dayoneevernote.evernote.auth.ClientFactoryFactory;
 import pl.nort.dayoneevernote.evernote.auth.ConstantTokenFactory;
+import pl.nort.dayoneevernote.evernote.auth.OAuthTokenFactory;
 import pl.nort.dayoneevernote.evernote.translate.DtdCachingNoteTransformer;
 import pl.nort.dayoneevernote.evernote.translate.NoteFactory;
 import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
@@ -38,15 +39,20 @@ import pl.nort.dayoneevernote.evernote.translate.SimpleNoteFactory;
 @Configuration
 public class BeansConfiguration {
 
-    @Value("${evernote.authToken:youForgotToFillEvernoteAuthToken}")
-    private String authToken;
-
     @Value("${evernote.useCachedDTD:false}")
     private boolean useCachedDTD;
 
     @Value("${evernote.service:production}")
     private String service;
 
+    @Value("${evernote.useDevelopersToken:false}")
+    private boolean useDevelopersToken;
+
+    // For constant token
+    @Value("${evernote.authToken:youForgotToFillEvernoteAuthToken}")
+    private String authToken;
+
+    // For OAuth
     @Value("${evernote.apiKey:youForgotToFillEvernoteApiKey}")
     private String apiKey;
 
@@ -55,7 +61,11 @@ public class BeansConfiguration {
 
     @Bean
     public ClientFactoryFactory clientFactoryFactory() {
-        return new ClientFactoryFactory(new ConstantTokenFactory(authToken), service);
+        if(useDevelopersToken) {
+            return new ClientFactoryFactory(new ConstantTokenFactory(authToken), service);
+        }
+
+        return new ClientFactoryFactory(new OAuthTokenFactory(apiKey, apiSecret), service);
     }
 
     @Bean
