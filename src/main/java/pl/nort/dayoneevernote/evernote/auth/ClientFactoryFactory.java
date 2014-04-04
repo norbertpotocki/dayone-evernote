@@ -15,7 +15,6 @@
 */
 package pl.nort.dayoneevernote.evernote.auth;
 
-import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
 
@@ -44,8 +43,6 @@ public class ClientFactoryFactory {
     }
 
     public ClientFactory getClientFactory() {
-        EvernoteAuth evernoteAuth = new EvernoteAuth(endpoint, tokenFactory.getToken());
-
-        return new ClientFactory(evernoteAuth);
+        return new ClientFactory(tokenFactory.getToken(endpoint));
     }
 }

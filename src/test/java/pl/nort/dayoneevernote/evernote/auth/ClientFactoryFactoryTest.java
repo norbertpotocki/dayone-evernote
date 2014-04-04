@@ -15,14 +15,16 @@
 */
 package pl.nort.dayoneevernote.evernote.auth;
 
-import java.util.UUID;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import com.evernote.auth.EvernoteAuth;
+import com.evernote.auth.EvernoteService;
+
 import pl.nort.dayoneevernote.exception.ConfigurationException;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -51,7 +53,7 @@ public class ClientFactoryFactoryTest {
     @Test
     public void shouldAskForTokenForEachFactory() throws Exception {
         TokenFactory tokenFactory = mock(TokenFactory.class);
-        when(tokenFactory.getToken()).thenReturn(UUID.randomUUID().toString());
+        when(tokenFactory.getToken(any(EvernoteService.class))).thenReturn(mock(EvernoteAuth.class));
 
         factory = new ClientFactoryFactory(tokenFactory, "production");
 
@@ -61,6 +63,6 @@ public class ClientFactoryFactoryTest {
             factory.getClientFactory();
         }
 
-        verify(tokenFactory, atLeast(calls)).getToken();
+        verify(tokenFactory, atLeast(calls)).getToken(EvernoteService.PRODUCTION);
     }
 }

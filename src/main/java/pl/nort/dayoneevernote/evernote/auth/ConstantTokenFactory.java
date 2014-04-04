@@ -15,6 +15,9 @@
 */
 package pl.nort.dayoneevernote.evernote.auth;
 
+import com.evernote.auth.EvernoteAuth;
+import com.evernote.auth.EvernoteService;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -31,7 +34,7 @@ public class ConstantTokenFactory implements TokenFactory {
     }
 
     @Override
-    public String getToken() {
-        return token;
+    public EvernoteAuth getToken(EvernoteService endpoint) {
+        return new EvernoteAuth(endpoint, token);
     }
 }

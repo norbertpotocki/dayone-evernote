@@ -15,6 +15,9 @@
 */
 package pl.nort.dayoneevernote.evernote.auth;
 
+import com.evernote.auth.EvernoteAuth;
+import com.evernote.auth.EvernoteService;
+
 /**
  * Token factory
  *
@@ -26,5 +29,5 @@ public interface TokenFactory {
      * Gets authorization token
      * @return token
      */
-    String getToken();
+    EvernoteAuth getToken(EvernoteService endpoint);
 }
